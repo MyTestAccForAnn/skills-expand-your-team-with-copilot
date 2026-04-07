@@ -472,6 +472,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Function to share an activity with friends
+  async function shareActivity(name, details, formattedSchedule) {
+    const shareText = `${name}\n${details.description}\nSchedule: ${formattedSchedule}`;
+    const shareData = {
+      title: name,
+      text: shareText,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Error sharing:", error);
+        }
+      }
+    } else {
+      // Fallback: copy a summary to the clipboard
+      const clipboardText = `${shareText}\n${window.location.href}`;
+      try {
+        await navigator.clipboard.writeText(clipboardText);
+        showMessage("Activity details copied to clipboard!", "success");
+      } catch (error) {
+        console.error("Error copying to clipboard:", error);
+        showMessage("Could not share. Please copy the page URL manually.", "error");
+      }
+    }
+  }
+
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
@@ -568,6 +598,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `
         }
+        <button class="share-button" data-activity="${name}" aria-label="Share this activity">
+          <span aria-hidden="true">📤</span> Share
+        </button>
       </div>
     `;
 
@@ -586,6 +619,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handler for share button
+    const shareButton = activityCard.querySelector(".share-button");
+    shareButton.addEventListener("click", () => {
+      shareActivity(name, details, formattedSchedule);
+    });
 
     activitiesList.appendChild(activityCard);
   }
