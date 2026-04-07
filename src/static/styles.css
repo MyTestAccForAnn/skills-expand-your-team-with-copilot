@@ -188,6 +188,8 @@ section h3 {
   padding-top: 10px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 /* Activity Tag */
@@ -593,7 +595,28 @@ footer {
   background-color: var(--border-focus);
 }
 
-/* Responsive adjustments for mobile */
+/* Share button */
+.share-button {
+  background-color: var(--background);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.share-button:hover {
+  background-color: var(--primary-light);
+  color: white;
+  border-color: var(--primary-light);
+}
+
+
 @media (max-width: 767px) {
   .sidebar-filters {
     margin-bottom: 15px;
